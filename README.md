@@ -21,6 +21,9 @@ Light Gated Recurrent Unit (Li-GRU) network is used to train the acoustic model.
 
 ### Data
 
+Audios are coded with 8Kbps, 8 bit, PCM, .wav format. We train the GAN with 20 hours data, and the Li-GRU is trained with 200 hours data.
+
+
 The speech enhancement dataset used in this work [(Valentini et al. 2016)](http://ssw9.net/papers/ssw9_PS2-4_Valentini-Botinhao.pdf) can be found in [Edinburgh DataShare](http://datashare.is.ed.ac.uk/handle/10283/1942). However, **the following script downloads and prepares the data for TensorFlow format**:
 
 ```
@@ -35,40 +38,24 @@ python make_tfrecords.py --force-gen --cfg cfg/e2e_maker.cfg
 
 ### Training
 
-Once you have the TFRecords file created in `data/segan.tfrecords` you can simply run the training process with:
+Sample command line to train can be :
 
 ```
-./train_segan.sh
+python main.py --init_noise_std 0. --save_path AM_GAN \
+                                          --init_l1_weight 100. --batch_size 50 --g_nl prelu \
+                                          --save_freq 50 --preemph 0.95 --epoch 86 --bias_deconv True \
+                                          --bias_downconv True --bias_D_conv True
 ```
 
-By default this will take all the available GPUs in your system, if any. Otherwise it will just take the CPU.
-
-**NOTE:** If you want to specify a subset of GPUs to work on, you can do so with the `CUDA_VISIBLE_DEVICES="0, 1, <etc>"` flag in the python execution within the training script. In the case of having two GPUs they'll be identified as 0 and 1, so we could just take the first GPU with: `CUDA_VISIBLE_DEVICES="0"`.
-
-A sample of G losses is interesting to see as stated in the paper, where L1 follows a minimization with a `100` factor and the adversarial loss gets to be equilibrated with low variance:
-
-**L1 loss (smoothing 0.5)**
-
-![G_L1](assets/g_l1_loss.png)
-
-**Adversarial loss (smoothing 0.5)**
-
-![G_ADV](assets/g_adv_loss.png)
-
-### Loading model and prediction
-
-First, the trained weights will have to be downloaded from [here](http://veu.talp.cat/segan/release_weights/segan_v1.1.tar.gz) and uncompressed.
-
-Then the `main.py` script has the option to process a wav file through the G network (inference mode), where the user MUST specify the trained weights file and the configuration of the trained network. In the case of the v1 SEGAN presented in the paper, the options would be:
+### Denoising
 
 ```
-CUDA_VISIBLE_DEVICES="" python main.py --init_noise_std 0. --save_path segan_v1.1 \
-                                       --batch_size 100 --g_nl prelu --weights SEGAN_full \
-                                       --test_wav <wav_filename> --clean_save_path <clean_save_dirpath>
+CUDA_VISIBLE_DEVICES="0" python main.py --init_noise_std 0. 
+										--save_path segan_allbiased_preemph                         --batch_size 100 
+										--g_nl prelu 
+										--weights SEGAN-50 
+										--test_wav sourcefile.wav 
+										--clean_save_path clean
 ```
-
-To make things easy, there is a bash script called `clean_wav.sh` that accepts as input argument the test filename and
-the save path.
-
 
 
