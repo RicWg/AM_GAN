@@ -51,7 +51,12 @@ CUDA_VISIBLE_DEVICES="0" python main.py --init_noise_std 0. \
 
 Sample audios are in ./Sample. An example of noise of background door slam is clearly mitigated between the noisy audio and the cleaned audio at t=0.83s. 
 
+Noisy audio:
+
 ![Noise](Sample/sample1_doorSlam.jpg)
+
+
+Denoised audio:
 
 ![Denoised](Sample/sample1_doorSlam.denoised.jpg)
 
