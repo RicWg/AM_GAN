@@ -53,7 +53,7 @@ Sample audios are in ./Sample. An example of noise of background door slam is cl
 
 ![Noise](Sample/sample1_doorSlam.jpg =100x20)
 
-![Denoised](Sample/sample1_doorSlam.denoised.jpg =100x20)
+![Denoised](Sample/sample1_doorSlam.denoised.jpg = 100x20)
 
 ### Li-GRU training
 
