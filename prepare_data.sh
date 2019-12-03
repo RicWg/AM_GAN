@@ -1,3 +1,9 @@
+# -*- coding: utf-8 -*-
+# Richard Wang, 2019-11
+# Enhancing Acoustic Model with Generative Adversarial Network
+# Some source code from Kaldi/Tensorflow/Keras/OpenAI/ACGAN/SEGAN
+#
+
 #!/bin/bash
 
 # DOWNLOAD THE DATASET

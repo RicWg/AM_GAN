@@ -1,3 +1,9 @@
+# -*- coding: utf-8 -*-
+# Richard Wang, 2019-11
+# Enhancing Acoustic Model with Generative Adversarial Network
+# Some source code from Kaldi/Tensorflow/Keras/OpenAI/ACGAN/SEGAN
+#
+
 from __future__ import print_function
 import tensorflow as tf
 from ops import *

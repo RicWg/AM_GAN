@@ -1,5 +1,10 @@
-#!/bin/bash
+# -*- coding: utf-8 -*-
+# Richard Wang, 2019-11
+# Enhancing Acoustic Model with Generative Adversarial Network
+# Some source code from Kaldi/Tensorflow/Keras/OpenAI/ACGAN/SEGAN
+#
 
+#!/bin/bash
 
 # guia file containing pointers to files to clean up
 if [ $# -lt 1 ]; then

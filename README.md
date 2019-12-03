@@ -1,30 +1,23 @@
-# AM_GAN: Enhancing Acoustic Model for Children with Generative Adversarial Network
+# AM_GAN
+
+Enhancing Acoustic Model for Children with Generative Adversarial Network
 
 ### Introduction
 
-This is the repository of the SEGAN project. Our original paper can be found [here](https://arxiv.org/abs/1703.09452), and test samples are available [here](http://veu.talp.cat/segan/).
+This is the repository for enhancing Acoustic Model with Generative Adversarial Network. In this project, we invetigate to train GAN to denoise audio and then use Li-GRU model to build the acoustic model.
 
-In this work a Generative Adversarial approach has been taken to do speech enhancement (i.e. removing noise from corrupted speech signals) with a fully convolutional architecture schematized as follows:
+The generator inside the GAN is a convolutional layer based encoder-decoder, and the discriminator is a classification model to predict the audio is noisy or not.  The generator can learn to clean the noise (or add more noise) with the help of discrimiator. We built the GAN with Tensorflow. After we train the discriminator with supervised clean/noisy audios, we then train the generator to produce more audio samples.
 
-![SEGAN_G](assets/segan_g.png)
+Light Gated Recurrent Unit (Li-GRU) network is used to train the acoustic model. We use FMLLR, CMVN and 5-layer GRU layer to build the model, together with dropout and batch normalization. We use Kaldi-5 and Pytorch to implement this model. 
 
-This model deals with raw speech waveforms on many noise conditions at different SNRs (40 at training time and 20 during test). It also models the speech characteristics from many speakers mixed within the same structure (without any supervision of identities), which makes the generative structure generalizable in the noise and speaker dimensions.
 
-**All the project is developed with TensorFlow**. There are two repositories that were good references on how GANs are defined and deployed:
-
-* [improved-gan](https://github.com/openai/improved-gan): implementing improvements to train GANs in a more stable way
-*  [DCGAN-tensorflow](https://github.com/carpedm20/DCGAN-tensorflow): implementation of the DCGAN in tensorflow
 
 ### Dependencies
-
-* Python 2.7
+* Kaldi 5.x
+* Pytorch 2.0
+* Python 2.7/3.6
 * TensorFlow 0.12
 
-You can install the requirements either to your virtualenv or the system via pip with:
-
-```
-pip install -r requirements.txt
-```
 
 ### Data
 
@@ -77,29 +70,5 @@ CUDA_VISIBLE_DEVICES="" python main.py --init_noise_std 0. --save_path segan_v1.
 To make things easy, there is a bash script called `clean_wav.sh` that accepts as input argument the test filename and
 the save path.
 
-### Authors
 
-* **Santiago Pascual** (TALP-UPC, BarcelonaTech)
-* **Antonio Bonafonte** (TALP-UPC, BarcelonaTech)
-* **Joan Serrà** (Telefónica Research, Barcelona)
 
-### Reference
-
-```
-@article{pascual2017segan,
-  title={SEGAN: Speech Enhancement Generative Adversarial Network},
-  author={Pascual, Santiago and Bonafonte, Antonio and Serr{\`a}, Joan},
-  journal={arXiv preprint arXiv:1703.09452},
-  year={2017}
-}
-```
-
-### Contact
-
-e-mail: santi.pascual@upc.edu
-
-### Notes
-
-* If using this code, parts of it, or developments from it, please cite the above reference.
-* We do not provide any support or assistance for the supplied code nor we offer any other compilation/variant of it.
-* We assume no responsibility regarding the provided code.
