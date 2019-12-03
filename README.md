@@ -39,11 +39,12 @@ python main.py --init_noise_std 0. --save_path AM_GAN \
 
 ```
 CUDA_VISIBLE_DEVICES="0" python main.py --init_noise_std 0. \
-										--save_path AM_GAN  \                      --batch_size 100 \
-										--g_nl prelu \
-										--weights SEGAN-50 \
-										--test_wav sourcefile.wav \
-										--clean_save_path clean
+					--save_path AM_GAN  \
+					--batch_size 100 \
+					--g_nl prelu \
+					--weights SEGAN-50 \
+					--test_wav sourcefile.wav \
+					--clean_save_path clean
 ```
 
 
