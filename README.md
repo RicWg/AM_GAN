@@ -12,7 +12,7 @@ Light Gated Recurrent Unit (Li-GRU) network is used to train the acoustic model.
 
 ### Dependencies
 * Kaldi 5.x
-* Pytorch 2.0
+* Pytorch 1.1
 * Python 2.7/3.6
 * TensorFlow 0.12
 
@@ -59,9 +59,22 @@ Sample audios are in ./Sample. An example of noise of background door slam is cl
 
 Dockerfile is uploaded to host the acoustic model training. The docker container will pull Pytorch 1.1 and Kaldi-5.x. After container is launched, the run.recipe.sh will be excuted inside the container. Log can be tailed in ./common, ./children_kaldi and ./children_kalditorch. 
 
+Command to build docker image, in the same directory of Dockerfile:
+
 ```
 	docker build -t image_name .
 ```
 
-Scripts in directory common is to do the pre-processing of audios, converting to FMLLR feature. Scripts in children_kaldi is to do nomalization, and train low level neural network. Scripts in children_kalditorch is to build Li-GRU layers with pytorch.
+Scripts in directory common is to do the pre-processing of audios, converting to FMLLR feature. Scripts in children_kaldi is to do nomalization, and train low level neural network. Scripts in children_kalditorch is to build Li-GRU layers with pytorch. Manual execution is easy, too.
 
+```
+cd /storage/Work/common
+bash script.all.sh > script.all.log 2> script.all.err
+
+cd /storage/Work/Children_kaldi
+bash run.sh > run.log 2> run.err
+bash run.dev.sh > run.dev.log 2> run.dev.err
+
+cd /storage/Work/Children_kalditorch
+bash run.sh > run.log 2> run.err
+```
