@@ -13,7 +13,7 @@ Light Gated Recurrent Unit (Li-GRU) network is used to train the acoustic model.
 ### Dependencies
 * Kaldi 5.x
 * Pytorch 1.1
-* Python 2.7/3.6
+* Python 2.7 (for TensorFlow) and 3.6( for Pytorch)
 * TensorFlow 0.12
 
 
@@ -70,16 +70,57 @@ Command to build docker image, in the same directory of Dockerfile:
 	docker build -t image_name .
 ```
 
-Scripts in directory common is to do the pre-processing of audios, converting to FMLLR feature. Scripts in children_kaldi is to do nomalization, and train low level neural network. Scripts in children_kalditorch is to build Li-GRU layers with pytorch. Manual execution is easy, too.
+Scripts script.all.sh in directory common is to do the pre-processing of data, split dataset(script.trans.sh), build language model (if necessary, script.lang.sh) and prepared the dictionary. We fix the language model when evaluate the effect of GAN. script.wav.sh is to convert audio format if needed.
+
 
 ```
 cd /storage/Work/common
 bash script.all.sh > script.all.log 2> script.all.err
+```
 
+
+Scripts in children_kaldi(run.sh) follows the procedure in Kaldi framwork. It generates the MFCC/FMLLR features, CMVN nomalization, and train a basic neural network. run.dev.sh is the decoding process one dev set.
+
+```
 cd /storage/Work/Children_kaldi
 bash run.sh > run.log 2> run.err
 bash run.dev.sh > run.dev.log 2> run.dev.err
+```
 
+Scripts in children_kalditorch(run.sh) is to build Li-GRU layers with pytorch based on the neural network output from hildren_kaldi. 
+
+```
 cd /storage/Work/Children_kalditorch
 bash run.sh > run.log 2> run.err
 ```
+
+Pytorch files to build the Li-GRU is 
+```
+python3 run_exp.py cfg/children/liGRU_fmllr.cfg
+```
+
+liGRU_fmllr.cfg has the configuration of the Li-GRU layers. Here are the most important part:
+
+```
+	ligru_lay = 550,550,550,550,550
+	ligru_drop = 0.2,0.2,0.2,0.2,0.2
+	ligru_use_laynorm_inp = False
+	ligru_use_batchnorm_inp = False
+	ligru_use_laynorm = False,False,False,False,False
+	ligru_use_batchnorm = True,True,True,True,True
+	ligru_bidir = True
+	ligru_act = relu,relu,relu,relu,relu
+	ligru_orthinit=True
+
+	arch_lr = 0.0002
+	arch_halving_factor = 0.5
+	arch_improvement_threshold = 0.001
+	arch_opt = rmsprop
+	opt_momentum = 0.0
+	opt_alpha = 0.95
+	opt_eps = 1e-8
+	opt_centered = False
+	opt_weight_decay = 0.0
+```
+
+In this project, GAN has been proved powerful to do the speech augmentation. Together with Li-GRU network, it shows significant improvement on the acoustic model for children. 
