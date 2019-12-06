@@ -67,7 +67,7 @@ Dockerfile is uploaded to host the acoustic model training. The docker container
 Command to build docker image, in the same directory of Dockerfile:
 
 ```
-	docker build -t image_name .
+docker build -t image_name .
 ```
 
 Scripts script.all.sh in directory common is to do the pre-processing of data, split dataset(script.trans.sh), build language model (if necessary, script.lang.sh) and prepared the dictionary. We fix the language model when evaluate the effect of GAN. script.wav.sh is to convert audio format if needed.

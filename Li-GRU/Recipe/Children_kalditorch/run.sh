@@ -6,4 +6,4 @@
 
 rm -r __pycache__
 
-python3 run_exp.py cfg/pearsonchildren/liGRU_fmllr.cfg # modify this one to use {MLP,liGRU,LSTM} for DNN
+python3 run_exp.py cfg/children/liGRU_fmllr.cfg # modify this one to use {MLP,liGRU,LSTM} for DNN
